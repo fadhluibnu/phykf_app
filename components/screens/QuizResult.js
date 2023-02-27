@@ -7,19 +7,24 @@ const QuizResult = ({ route, navigation }) => {
     const [akurasi, setAkurasi] = useState('')
     useEffect(() => {
         let point = 100 / jumlahSoal
-        setAvgPoint(`${String(point).split('.')[0]},${String(point).split('.')[1].split('')[0]}`)
+        setAvgPoint(`${Math.ceil(point)}`)
         setAkurasi(Math.ceil(point * parseInt(benar)))
     }, [])
     return (
-        <View style={{ 
+        <View style={{
             flex: 1,
             backgroundColor: '#FFEAEA',
         }}>
-            <TouchableOpacity style={{
-                position: 'absolute',
-                left: 30,
-                top: 30
-            }}>
+            <TouchableOpacity
+                onPress={() => {
+                    navigation.navigate("home")
+                }} style={{
+                    position: 'absolute',
+                    left: 30,
+                    top: 30,
+                    backgroundColor: 'white',
+                    zIndex: 100
+                }}>
                 <Image
                     source={require('../../assets/arrowLeft.png')}
                     style={{

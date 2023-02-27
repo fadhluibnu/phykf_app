@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, Alert } from 'react-na
 import { AntDesign } from '@expo/vector-icons';
 import { RadioButton } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import axios from 'axios';
 
 const Quizpythagoras = ({ navigation }) => {
 
@@ -18,50 +18,72 @@ const Quizpythagoras = ({ navigation }) => {
   const [jawabanBenar, setJawabanBenar] = useState(0)
   const [jawabanSalah, setJawabanSalah] = useState(0)
   useEffect(() => {
-    let soal = [
-      {
-        image: 'https://tinypng.com/images/social/website.jpg',
-        soal: 'Bulan apa hari sekarang?',
-        a: "Januari",
-        b: "Februari",
-        c: "Maret",
-        key: "b"
-      },
-      {
-        image: null,
-        soal: 'Tahun berapa sekarang ?',
-        a: "2019",
-        b: "2020",
-        c: "2023",
-        key: "c"
-      },
-      {
-        image: 'https://th.bing.com/th/id/OIF.BZMYRos40rVFjqFx0qqDzQ?pid=ImgDet&rs=1',
-        soal: 'Prediksi Mancaster United Vs FC Barcelona?',
-        a: "2-1",
-        b: "1-2",
-        c: "No Comment",
-        key: "c"
-      }
-    ]
-    setSoals(soal[nomorSoal - 1])
-    setJmlhSoal(soal.length)
-    setTimeout(() => {
-      setLoadingSoal(false)
-    }, 200)
+    axios('https://smart-field-alley.glitch.me/api/soal').then((response) => {
+      let soal = response.data.data
+      setSoals(soal[nomorSoal - 1])
+      setJmlhSoal(soal.length)
+      setTimeout(() => {
+        setLoadingSoal(false)
+      }, 200)
+    })
+    // let soal = [
+    //   {
+    //     image: 'https://tinypng.com/images/social/website.jpg',
+    //     soal: 'Bulan apa hari sekarang?',
+    //     a: "Januari",
+    //     b: "Februari",
+    //     c: "Maret",
+    //     key: "b"
+    //   },
+    //   {
+    //     image: null,
+    //     soal: 'Tahun berapa sekarang ?',
+    //     a: "2019",
+    //     b: "2020",
+    //     c: "2023",
+    //     key: "c"
+    //   },
+    //   {
+    //     image: 'https://th.bing.com/th/id/OIF.BZMYRos40rVFjqFx0qqDzQ?pid=ImgDet&rs=1',
+    //     soal: 'Prediksi Mancaster United Vs FC Barcelona?',
+    //     a: "2-1",
+    //     b: "1-2",
+    //     c: "No Comment",
+    //     key: "c"
+    //   }
+    // ]
+    // setSoals(soal[nomorSoal - 1])
+    // setJmlhSoal(soal.length)
+    // setTimeout(() => {
+    //   setLoadingSoal(false)
+    // }, 200)
   }, [nomorSoal])
 
-  const anserCheck = (key, answer) => {
+  const anserCheck = (answer) => {
     setStatusAnswer(null)
-    setTimeout(() => {
-      if (key == answer) {
+    axios.post('https://smart-field-alley.glitch.me/api/jobsheet/one', {
+      quizId: soals.id,
+      answer: answer
+    }).then((response) => {
+      if (response.data.message == "benar") {
         setJawabanBenar(jawabanBenar + 1)
         setStatusAnswer(true)
       } else {
         setJawabanSalah(jawabanSalah + 1)
         setStatusAnswer(false)
       }
-    }, 200);
+    }).catch(function (error) {
+      Alert.alert("Kesalahan Jaringan")
+    });
+    // setTimeout(() => {
+    //   if (key == answer) {
+    //     setJawabanBenar(jawabanBenar + 1)
+    //     setStatusAnswer(true)
+    //   } else {
+    //     setJawabanSalah(jawabanSalah + 1)
+    //     setStatusAnswer(false)
+    //   }
+    // }, 200);
   }
 
   return (
@@ -95,7 +117,7 @@ const Quizpythagoras = ({ navigation }) => {
             ) :
               (
                 <View style={{ flex: 1 }}>
-                  {soals.image != null ? <Image source={{ uri: soals.image }} style={{
+                  {soals.image != null ? <Image source={{ uri: 'https://smart-field-alley.glitch.me/api/images/' + soals.image }} style={{
                     width: '100%',
                     height: 170,
                     resizeMode: 'contain',
@@ -125,7 +147,7 @@ const Quizpythagoras = ({ navigation }) => {
                       status={checked === 'one' ? 'checked' : 'unchecked'}
                       onPress={() => {
                         setChecked('one')
-                        anserCheck(soals.key, 'a')
+                        anserCheck('a')
                       }}
                     />
                     <Text style={{
@@ -151,7 +173,7 @@ const Quizpythagoras = ({ navigation }) => {
                       status={checked === 'two' ? 'checked' : 'unchecked'}
                       onPress={() => {
                         setChecked('two')
-                        anserCheck(soals.key, 'b')
+                        anserCheck('b')
                       }}
                     />
                     <Text style={{
@@ -177,7 +199,7 @@ const Quizpythagoras = ({ navigation }) => {
                       status={checked === 'three' ? 'checked' : 'unchecked'}
                       onPress={() => {
                         setChecked('three')
-                        anserCheck(soals.key, 'c')
+                        anserCheck('c')
                       }}
                     />
                     <Text style={{
@@ -195,7 +217,6 @@ const Quizpythagoras = ({ navigation }) => {
                             salah: jawabanSalah,
                             jumlahSoal: jmlhSoal
                           })
-                          Alert.alert(`Jawaban benar : ${jawabanBenar}\nJawaban salah: ${jawabanSalah}\nTotal soal : ${jmlhSoal}`)
                         } else {
                           setNomorSoal(nomorSoal + 1)
                           setChecked('')
