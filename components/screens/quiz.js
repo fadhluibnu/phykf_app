@@ -36,7 +36,9 @@ export default function Quiz({ navigation }) {
         alignItems: 'center'
       }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('quizpythagoras')}
+          onPress={() => navigation.navigate('LatihanSoal', {
+            'category' : '1'
+          })}
           style={{
             backgroundColor: '#F07777',
             width: 250,
@@ -64,7 +66,9 @@ export default function Quiz({ navigation }) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('quizkpkfpb')}
+          onPress={() => navigation.navigate('LatihanSoal', {
+            'category' : '3'
+          })}
           style={{
             backgroundColor: '#F07777',
             width: 250,

@@ -5,8 +5,9 @@ import { RadioButton } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 
-const Quizpythagoras = ({ navigation }) => {
+const LatihanSoal = ({ route, navigation }) => {
 
+  const { category } = route.params
   const [key, setKey] = useState('');
   const [checked, setChecked] = useState('');
   const [jmlhSoal, setJmlhSoal] = useState('')
@@ -18,7 +19,7 @@ const Quizpythagoras = ({ navigation }) => {
   const [jawabanBenar, setJawabanBenar] = useState(0)
   const [jawabanSalah, setJawabanSalah] = useState(0)
   useEffect(() => {
-    axios('https://smart-field-alley.glitch.me/api/soal').then((response) => {
+    axios('https://smart-field-alley.glitch.me/api/soal/category/').then((response) => {
       let soal = response.data.data
       setSoals(soal[nomorSoal - 1])
       setJmlhSoal(soal.length)
@@ -146,8 +147,10 @@ const Quizpythagoras = ({ navigation }) => {
                       color={(checked == 'one' && statusAnswer == null) ? 'black' : 'white'}
                       status={checked === 'one' ? 'checked' : 'unchecked'}
                       onPress={() => {
-                        setChecked('one')
-                        anserCheck('a')
+                        if (checked == 'one') {
+                          setChecked('one')
+                          anserCheck('a')
+                        }
                       }}
                     />
                     <Text style={{
@@ -172,8 +175,10 @@ const Quizpythagoras = ({ navigation }) => {
                       color={(checked == 'two' && statusAnswer == null) ? 'black' : 'white'}
                       status={checked === 'two' ? 'checked' : 'unchecked'}
                       onPress={() => {
-                        setChecked('two')
-                        anserCheck('b')
+                        if (checked == 'two') {
+                          setChecked('two')
+                          anserCheck('b')
+                        }
                       }}
                     />
                     <Text style={{
@@ -198,8 +203,10 @@ const Quizpythagoras = ({ navigation }) => {
                       color={(checked == 'three' && statusAnswer == null) ? 'black' : 'white'}
                       status={checked === 'three' ? 'checked' : 'unchecked'}
                       onPress={() => {
-                        setChecked('three')
-                        anserCheck('c')
+                        if (checked == 'three') {
+                          setChecked('three')
+                          anserCheck('c')
+                        }
                       }}
                     />
                     <Text style={{
@@ -305,4 +312,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Quizpythagoras;
+export default LatihanSoal;

@@ -11,7 +11,7 @@ import HomeScreen from './components/screens/home';
 import Pythagoras from './components/screens/pythagoras';
 import Kpkfpb from './components/screens/kpkfpb';
 import Quiz from './components/screens/quiz';
-import Quizpythagoras from './components/screens/quizpythagoras';
+import LatihanSoal from './components/screens/LatihanSoal';
 import Quizkpkfpb from './components/screens/quizkpkfpb';
 import PythagorasScreen from './components/screens/pythagoras';
 import KPKFPBScreen from './components/screens/kpkfpb';
@@ -58,8 +58,8 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="quizpythagoras"
-          component={Quizpythagoras}
+          name="LatihanSoal"
+          component={LatihanSoal}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -67,11 +67,11 @@ export default function App() {
           component={KPKFPBScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="quizkpkfpb"
           component={Quizkpkfpb}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name="QuizResult"
           component={QuizResult}
